@@ -10,7 +10,7 @@ The following are the highligths of this task:
 - In this part, the Dubins path planning is used
 - Variables are used for number of points and area (so they can be changed accordingly)
 - Testing was done on the following parameters:
-    - num_points = 5 (sample points)
+    - num_points = 6 (sample points)
     - area = 100 m²
     - percentage = 0.5
     - std = 3
