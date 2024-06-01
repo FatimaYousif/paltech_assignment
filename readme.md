@@ -2,43 +2,26 @@
 
 ## Part 1: Basic waypoint manager in ROS2
 
-### Task 1: Set waypoints from geojson file.
-Complete the **set_waypoints_callback** function in **waypoint_manager.py** in order to load the waypoints to the node.
-
-### Task 2: Coordinate transformation from geographic to robot frame.
-Complete the **convert_waypoints_to_robot_frame** function in **waypoint_manager.py**. This function should convert the list of waypoints from geographic coordinates to the robot's coordinate frame (X, Y), where:  
-    X represents the distance in meters to the east of the robot's initial pose.  
-    Y represents the distance in meters to the north of the robot's initial pose.  
-### Task3: Loaded waypoints visualization 
-Plot the waypoints (X,Y,yaw) in robot coordinate frame using matplotlib or another visualization tool.  
+This forked repository contains completion of given task 1 to 3 in the **waypoint_manager.py** for the part 1.
 
 ## Part 2: Path Planning 
 
-This task consists of designing a path planning algorithm for the robot to efficiently follow waypoints:  
-
-- Generate M random GPS points (e.g. 500) distributed in an area of 1000 m². These points represent weed positions.
-- Add a cluster of approximately 2-10 plants around 50% of the M points to simulate weed clusters. This can be achieved using a normal distribution with a standard deviation of 3 meters.
-- Randomly assign a starting position to the robot and perform path planning for it with the following constraints:
-    - The robot is non-holonomic and follows a Dubins motion model with a minimum turning radius of 2 meters.
-    - It is not necessary for the robot to reach every generated point. Points that are unreachable due to the robot's turning radius constraints can be omitted from the plan.
-- Plot the calculated path. You may simplify the path using straight lines.
-- Output the time and path length of the calculated path (you can assume a constant velocity of 1m/s)
-
-**BONUS:**  
-
-- How does the path planning change if we allow the robot to move in reverse? (REEDS_SHEPP motion model instead of DUBINS) Explain.
-- What would happen if the working area of the robot is taken into account? E.G. the robot can remove weeds that are in a radius of 0,5m around its center. Explain.
-
-## Submit your answers
-
-To submit your completed assignment, **please fork this repository**, complete the tasks within a week (7 days), and then push your changes to your forked repository. Once done, send us the link to your forked repository to felix.schiegg@paltech.eu with the subject line "Assignment Submission - [Your Name]". Ensure your repository is public so we can review your work.
+The following are the highligths of this task:
+- In this part, the Dubins path planning is used
+- Variables are used for number of points and area (so they can be changed accordingly)
+- Testing was done on the following parameters:
+    - num_points = 5 (sample points)
+    - area = 100 m²
+    - percentage = 0.5
+    - std = 3
+- The time and path length of the calculated path (was as by given assumption, a constant velocity of 1m/s)
+   
+## Output
 
 
 
+### Challenges:
 
+The implementation faced a challenge due to the lack of prior ROS2 installation, which was necessary for this task. As a workaround, two additional .ipynb files were provided: "paltech_part1.ipynb" and "paltech_part2.ipynb". These files were used to verify the functionality of the code.
 
-
-
-
-
-
+Unfortunately, due to time constraints, further optimizations such as fine-tuning the path planning using Dubins and addressing the bonus tasks were not possible. Hence, they remain pending for future consideration.
