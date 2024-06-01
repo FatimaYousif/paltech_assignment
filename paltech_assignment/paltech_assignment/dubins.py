@@ -140,11 +140,12 @@ class Dubins:
           result.append(end[:2])
           return result
     
-    def calculate_path_length(self,path):
+    def calculate_path_length_time(self,path):
         length = 0.0
         for i in range(1, len(path)):
             length += dist(path[i-1], path[i])
-        return length
+        path_time = length / 1  # Assuming constant velocity of 1 m/s
+        return length, path_time
 
 
     

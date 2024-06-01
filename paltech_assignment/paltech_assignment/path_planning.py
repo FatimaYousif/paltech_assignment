@@ -4,31 +4,31 @@ import matplotlib.pyplot as plt
 from dubins import Dubins
 
 class WaypointGenerator:
-    def __init__(self, num_points, area_size, cluster_percentage, cluster_std):
+    def __init__(self, num_points, area, percentage, std):
         self.num_points = num_points
-        self.area_size = area_size
-        self.cluster_percentage = cluster_percentage
-        self.cluster_std = cluster_std
+        self.area = area
+        self.percentage = percentage
+        self.std = std
         self.waypoints = None
-        self.robot_start_pos = None
+        self.robot_intial_position = None
 
     def generate_random_points(self):
-        self.waypoints = np.random.uniform(0, self.area_size, (self.num_points, 2))
+        self.waypoints = np.random.uniform(0, self.area, (self.num_points, 2))
 
     def add_clusters(self):
-        num_clusters = int(self.num_points * self.cluster_percentage)
+        num_clusters = int(self.num_points * self.percentage)
         cluster_indices = np.random.choice(range(self.num_points), num_clusters, replace=False)
 
         for idx in cluster_indices:
             num_plants = np.random.randint(2, 10)
             cluster_center = self.waypoints[idx]
-            plants_x = np.random.normal(cluster_center[0], self.cluster_std, num_plants)
-            plants_y = np.random.normal(cluster_center[1], self.cluster_std, num_plants)
-            cluster_points = np.column_stack((plants_x, plants_y))
+            x = np.random.normal(cluster_center[0], self.std, num_plants)
+            y = np.random.normal(cluster_center[1], self.std, num_plants)
+            cluster_points = np.column_stack((x, y))
             self.waypoints = np.concatenate((self.waypoints, cluster_points))
 
-    def assign_start_position(self):
-        self.robot_start_pos = np.random.uniform(0, self.area_size, 2)
+    def set_robot_initial_position(self):
+        self.robot_intial_position = np.random.uniform(0, self.area, 2)
 
 def plot_points(points, clusters, start_pos, path):
     plt.figure(figsize=(10, 10))
@@ -45,7 +45,7 @@ def plot_points(points, clusters, start_pos, path):
 
 
 def main():
-    num_points = 5
+    num_points = 6
     area_size = 100
     cluster_percentage = 0.5
     cluster_std = 3
@@ -53,12 +53,12 @@ def main():
     generator = WaypointGenerator(num_points, area_size, cluster_percentage, cluster_std)
     generator.generate_random_points()
     generator.add_clusters()
-    generator.assign_start_position()
+    generator.set_robot_initial_position()
 
     all_points = generator.waypoints
     clusters = all_points[num_points:]  # Separate cluster points
     points = all_points[:num_points]  # Original points
-    start_pos = generator.robot_start_pos
+    start_pos = generator.robot_intial_position
 
     start = np.append(start_pos, np.random.uniform(0, 2 * np.pi))
     waypoints = [np.append(point, np.random.uniform(0, 2 * np.pi)) for point in points]
@@ -73,8 +73,9 @@ def main():
         current_pos = waypoint
 
     plot_points(points, clusters, start_pos, path)
-    path_length = dubins.calculate_path_length(path)
+    path_length, path_time = dubins.calculate_path_length_time(path)
     print("Path Length:", path_length)
+    print("Path Time:", path_time)
 
 if __name__ == "__main__":
     main()
