@@ -15,9 +15,6 @@ The following are the highligths of this task:
     - percentage = 0.5
     - std = 3
 - The time and path length of the calculated path (was as by given assumption, a constant velocity of 1m/s)
-   
-## Output
-
 
 
 ### Challenges:
