@@ -10,7 +10,7 @@ class WaypointGenerator:
         self.percentage = percentage
         self.std = std
         self.waypoints = None
-        self.robot_intial_position = None
+        self.robot_initial_position = None
 
     def generate_random_points(self):
         self.waypoints = np.random.uniform(0, self.area, (self.num_points, 2))
@@ -28,24 +28,33 @@ class WaypointGenerator:
             self.waypoints = np.concatenate((self.waypoints, cluster_points))
 
     def set_robot_initial_position(self):
-        self.robot_intial_position = np.random.uniform(0, self.area, 2)
+        self.robot_initial_position = np.random.uniform(0, self.area, 2)
 
-def plot_points(points, clusters, start_pos, path):
-    plt.figure(figsize=(10, 10))
-    plt.scatter(points[:, 0], points[:, 1], c='blue', marker='o', label='Waypoints')
-    # plt.scatter(clusters[:, 0], clusters[:, 1], c='red', marker='x', label='Cluster Points')
+
+def plot_path(path, radius, start_pos, waypoints):
+    plt.figure()
+    plt.plot(path[:, 0], path[:, 1], label="Dubins path")
+    plt.gca().set_aspect('equal', adjustable='box')
+    plt.scatter(waypoints[:, 0], waypoints[:, 1], c='red', marker='o', label='Waypoints')
+
     plt.scatter(start_pos[0], start_pos[1], c='green', marker='s', label='Start Position')
-    path = np.array(path)
-    plt.plot(path[:, 0], path[:, 1], c='orange', label='Dubins Path')
-    plt.xlabel('X')
-    plt.ylabel('Y')
+    plt.title(f'Dubins Path Planning with Turn Radius {radius}')
+    plt.xlabel('x')
+    plt.ylabel('y')
     plt.legend()
-    plt.title('Dubins Path Planning')
+    plt.grid(True)
     plt.show()
 
 
+
 def main():
-    num_points = 6
+    radius = 2.0
+    point_separation = 0.1
+
+    # Dubins path planner
+    dubins_planner = Dubins(radius, point_separation)
+
+    num_points = 5
     area_size = 100
     cluster_percentage = 0.5
     cluster_std = 3
@@ -55,27 +64,32 @@ def main():
     generator.add_clusters()
     generator.set_robot_initial_position()
 
+
     all_points = generator.waypoints
     clusters = all_points[num_points:]  # Separate cluster points
     points = all_points[:num_points]  # Original points
-    start_pos = generator.robot_intial_position
+    start_pos = generator.robot_initial_position
 
+  
     start = np.append(start_pos, np.random.uniform(0, 2 * np.pi))
     waypoints = [np.append(point, np.random.uniform(0, 2 * np.pi)) for point in points]
 
-    dubins = Dubins(radius=2, point_separation=2)
-    path = []
-    current_pos = start
+    # Compute the Dubins path between all waypoints and combine the paths
+    combined_path = np.empty((0, 2))
+    current_position = start
 
     for waypoint in waypoints:
-        new_path, _ = dubins.dubins_path(current_pos, waypoint)
-        path.extend(new_path)
-        current_pos = waypoint
+        path, _ = dubins_planner.dubins_path(current_position, waypoint)
+        combined_path = np.vstack((combined_path, path))
+        current_position = waypoint
 
-    plot_points(points, clusters, start_pos, path)
-    path_length, path_time = dubins.calculate_path_length_time(path)
-    print("Path Length:", path_length)
-    print("Path Time:", path_time)
+    # Plotting
+    plot_path(combined_path, radius, start,  np.array(points))
+    
+    length, time = dubins_planner.calculate_path_length(combined_path)
+    print("path length", length)
+    print("time", time)
+    
 
 if __name__ == "__main__":
     main()
