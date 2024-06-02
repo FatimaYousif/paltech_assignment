@@ -559,7 +559,7 @@ class Dubins:
         return center+self.radius*vect
     
 
-    def calculate_path_length(self,path):
+    def calculate_path_length_time(self,path):
         length = 0.0
         for i in range(1, len(path)):
             length += dist(path[i-1], path[i])

@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from dubins import Dubins
 
-class WaypointGenerator:
+class WaypointManager:
     def __init__(self, num_points, area, percentage, std):
         self.num_points = num_points
         self.area = area
@@ -54,12 +54,12 @@ def main():
     # Dubins path planner
     dubins_planner = Dubins(radius, point_separation)
 
-    num_points = 5
-    area_size = 100
-    cluster_percentage = 0.5
-    cluster_std = 3
+    num_points = 6
+    area = 100
+    percentage = 0.5
+    std = 3
 
-    generator = WaypointGenerator(num_points, area_size, cluster_percentage, cluster_std)
+    generator = WaypointManager(num_points, area, percentage, std)
     generator.generate_random_points()
     generator.add_clusters()
     generator.set_robot_initial_position()
@@ -68,10 +68,10 @@ def main():
     all_points = generator.waypoints
     clusters = all_points[num_points:]  # Separate cluster points
     points = all_points[:num_points]  # Original points
-    start_pos = generator.robot_initial_position
+    initial_position = generator.robot_initial_position
 
   
-    start = np.append(start_pos, np.random.uniform(0, 2 * np.pi))
+    start = np.append(initial_position, np.random.uniform(0, 2 * np.pi))
     waypoints = [np.append(point, np.random.uniform(0, 2 * np.pi)) for point in points]
 
     # Compute the Dubins path between all waypoints and combine the paths
@@ -86,7 +86,7 @@ def main():
     # Plotting
     plot_path(combined_path, radius, start,  np.array(points))
     
-    length, time = dubins_planner.calculate_path_length(combined_path)
+    length, time = dubins_planner.calculate_path_length_time(combined_path)
     print("path length", length)
     print("time", time)
     
