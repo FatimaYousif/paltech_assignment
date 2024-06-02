@@ -20,7 +20,7 @@ The following are the highligths of this task:
 
 
 
-### Challenges:
+## Challenges:
 
 The implementation faced a challenge due to the lack of prior ROS2 installation, which was necessary for this task. As a workaround, two additional .ipynb files were provided: `paltech_part1.ipynb` and `paltech_part2.ipynb`. These files were used to verify the functionality of the code.
 
