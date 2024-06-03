@@ -17,8 +17,8 @@ The following are the highligths of this task:
 - The time and path length of the calculated path (was as by given assumption, a constant velocity of 1m/s)
 
 
-### Challenges:
+## Challenges:
 
-The implementation faced a challenge due to the lack of prior ROS2 installation, which was necessary for this task. As a workaround, two additional .ipynb files were provided: "paltech_part1.ipynb" and "paltech_part2.ipynb". These files were used to verify the functionality of the code.
+The implementation faced a challenge due to the lack of prior ROS2 installation, which was necessary for this task. As a workaround, two additional .ipynb files were provided: `paltech_part1.ipynb` and `paltech_part2.ipynb`. These files were used to verify the functionality of the code.
 
 Unfortunately, due to time constraints, further optimizations such as fine-tuning the path planning using Dubins and addressing the bonus tasks were not possible. Hence, they remain pending for future consideration.
