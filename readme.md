@@ -20,3 +20,5 @@ Utilized both nearest neighbours and travelling salesman problem as highlighted 
 ## Files for new tasks:
  - `utm_waypoints.ipynb`
  - `pathplanning_nn_tsp.ipynb` (Also in the already provided file named `path_planning.py`)
+
+Note: Outputs for both can be directly visualized in `.ipynb` notebooks, this readme however provides the required explanations for them.
